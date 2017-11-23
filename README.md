@@ -1,0 +1,2 @@
+# bagel
+Bagel RESTful API
