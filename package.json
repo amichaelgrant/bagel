@@ -1,0 +1,22 @@
+{
+  "name": "bagel",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "DEBUG=Bagel:* node ./Httpserver.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "deasync": "^0.1.11",
+    "debug": "~0.7.4",
+    "ejs": "~0.8.5",
+    "esdoc": "^1.0.4",
+    "esdoc-standard-plugin": "^1.0.0",
+    "express": "~4.0.0",
+    "jsdoc": "^3.5.5",
+    "mongodb": "^2.2.33",
+    "morgan": "~1.0.0",
+    "static-favicon": "~1.0.0"
+  }
+}
