@@ -1,10 +1,27 @@
 /**
- * @module
+ * @module Bagel.js
  * @description Core Bagel functions
- * Bagel.js
+ * Bagel{
+ *      Id              {Number}
+ *      Name            {String}
+ *      Age             {Number}
+ *      Gender          {String}
+ *      LastLocation    {Number}
+ *      Latitude        {Number}
+ *      Longitude       {Number}
+ * }
  */
-var debug = require("debug")("Bagel:Models/Bagel");
-
+var debug               = require("debug")("Bagel:Models/Bagel");
+var db                  = global.db.collection("Bagel");
+var isValidAge          = require("./Validation").isValidAge;
+var isNotProperRange    = require("./Validation").isNotProperRange;
+var parseToInt          = require("./Validation").parseToInt;
+var parseToFloat        = require("./Validation").parseToFloat;
+var isValidPoint        = require("./Validation").isValidPoint;
+var isValidDistance     = require("./Validation").isValidDistance;
+var parseLatitude       = require("./Validation").parseLatitude;
+var parseLongitude      = require("./Validation").parseLongitude;
+var pageSize            = 10;
 
 /**@example 
  * @param {String} Id
@@ -43,4 +60,33 @@ exports.Delete = function(Id, Callback){};
  * @param {Function} Callback
  * @return A list of bagels on success or an error object on failure
  */
-exports.List = function(Filter, Callback){};
+exports.List = function(Filter, Callback){
+    try{
+        if(Filter.gender && (Filter.gender === "f" || Filter.gender === "m"))
+            Query.Gender = Filter.gender;
+        if(Filter.min_age && isValidAge(Filter.min_age)) 
+            Query.Age = {};
+        if(Filter.max_age && isValidAge(Filter.max_age))
+            Query.Age = {};
+        if(Filter.min_age && Filter.max_age){
+            if(isNotProperRange(Filter.min_age, Filter.max_age))
+                delete Query.Age;
+        };
+        if(
+            (Filter.origin && isValidPoint(Filter.origin)) &&
+            (Filter.dist   && isValidDistance(Filter.dist))
+        ){
+            Query.Latitude = 0;
+        }
+    }catch(exx){
+        return Callback(exx);
+    };
+    
+    var Query = {};
+    var SortAndPage = {};
+    db.count(Query, function(err, size){
+        db.find(Query, {}, SortAndPage).toArray(function(err, result){
+            return Callback(err, { Items: result, Size:size, Page:0 });
+        });
+    });
+};

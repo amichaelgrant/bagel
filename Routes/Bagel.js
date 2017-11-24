@@ -1,3 +1,10 @@
+/**
+ * @module Bagel.js
+ * @description Bagel API endpoints; Any request to access API goes through this layer
+ *              before being forwarded to appropriate functions
+ * @author Michael Grant <ulermod@gmail.com>
+ */
+
 var express = require('express');
 var router  = express.Router();
 var bModel  = require('../Models/Bagel');

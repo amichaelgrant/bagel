@@ -1,3 +1,9 @@
+/**
+ * @module Httpserver.js
+ * @description Simple yet powerfull HTTP server, based on Express
+ * @author Michael Grant <ulermod@gmail.com>
+ */
+
 require('./Connection')();
 var debug = require('debug')('Bagel:Httpserver.js');
 var express = require('express');
@@ -22,6 +28,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'Public')));
 
 app.use('/', require('./Routes/Index'));
+app.use('/bagels', require('./Routes/Bagel'));
+
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
